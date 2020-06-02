@@ -1,0 +1,91 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.require_version ">= 2.2.7"
+
+Vagrant.configure("2") do |config|
+
+   config.vm.synced_folder ".", "/vagrant", disabled: true
+
+   config.ssh.insert_key = false
+
+   config.vm.define "tf-code" do |code|
+      code.vm.box = "launchquickly/focal-desktop64"
+      code.vm.box_version = "0.0.4"
+
+      code.vm.hostname = "tf-code"
+
+      code.vm.network :private_network, ip: "10.205.0.14"
+
+      code.vm.provider "virtualbox" do |vb|
+         vb.gui = true
+         vb.memory = 4096
+         vb.cpus = 2
+         vb.customize ["modifyvm", :id, "--vram", "128"]
+      end
+
+      code.vm.provision "shell", inline: <<-SHELL
+         snap install code --classic
+      SHELL
+
+      # Run as unpriviliged user to configure for 'vagrant' user
+      code.vm.provision "shell", privileged: false, inline: <<-SHELL
+         code --install-extension ms-vscode-remote.remote-ssh
+      SHELL
+
+      # Make private keys of instances that vscode will connect to available
+      code.vm.provision "file", source: "./keys/id_rsa_terraform", destination: "~/.ssh/id_rsa_terraform"
+
+      code.vm.provision "file", source: "./config", destination: "~/.ssh/config"
+
+      code.vm.provision "shell", privileged: false, inline: <<-SHELL
+         chmod 400 ~/.ssh/id_rsa_terraform
+         chmod 400 ~/.ssh/config
+      SHELL
+   end
+
+   config.vm.define "tf-server" do |server|
+      server.vm.box = "launchquickly/focal64"
+      server.vm.box_version = "0.0.3"
+
+      server.vm.hostname = "tf-server"
+
+      server.vm.network :private_network, ip: "10.205.0.24"
+
+      server.ssh.private_key_path = ['~/.vagrant.d/insecure_private_key', './keys/id_rsa_terraform']
+
+      server.vm.provision "file", source: "./keys/id_rsa_terraform.pub", destination: "~/.ssh/authorized_keys"
+
+      server.vm.provision "shell", inline: <<-SHELL
+         tf_version=0.12.26
+         tf_dist=terraform_${tf_version}_linux_amd64.zip
+         expected_sha256=607bc802b1c6c2a5e62cc48640f38aaa64bef1501b46f0ae4829feb51594b257
+
+         wget https://releases.hashicorp.com/terraform/${tf_version}/${tf_dist}
+
+         if sha256sum $tf_dist | grep -q $expected_sha256 
+         then
+            echo "terraform archive checksum matches expected"
+         else
+            echo "terraform archive checksum does not match expected - exiting"
+            exit 1
+         fi
+
+         apt-get install unzip
+         unzip $tf_dist
+
+         install terraform /usr/local/bin/
+
+         rm terraform
+         rm $tf_dist
+      SHELL
+
+      # Run as unpriviliged user to configure for 'vagrant' user
+      server.vm.provision "shell", privileged: false, inline: <<-SHELL
+         git clone https://github.com/launchquickly/terraform.git
+         cd terraform
+         # change repository remote access from https to ssh
+         git remote set-url origin git@github.com:launchquickly/terraform.git
+      SHELL
+   end
+end

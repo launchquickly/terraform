@@ -1,0 +1,10 @@
+Host terraform.scot.local
+  HostName 10.205.0.24
+  User vagrant
+  Port 22
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /home/vagrant/.ssh/id_rsa_terraform
+  IdentitiesOnly yes
+  LogLevel FATAL
