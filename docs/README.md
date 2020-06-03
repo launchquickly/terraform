@@ -1,9 +1,16 @@
 # Concepts
 
-## Provider
+## [Providers](https://www.terraform.io/docs/configuration/providers.html)
 A plugin that Terraform uses to translate the API interactions with a service, such as AWS or DataDog. 
 
-## Resource
+Providers define the resource types available for it and the arguments each resource type accepts. Providers require configuration, which will be specific to each provider type.
+
+When a new provider is configured is must be initialised before it is used to download and install the provider plugin. This can be done using the command:
+```
+terraform init
+```
+
+## [Resources](https://www.terraform.io/docs/configuration/resources.html)
 Defines a piece of infrastructure, whether physical, such as an EC2 instance, or logical, such as a Heroku app.
 
 ## Provisioner
@@ -42,6 +49,11 @@ Check validation and report errors with modules, attribute names, and value type
 terraform validate
 ```
 
+Display what would be changed if executed:
+```
+terraform plan
+``` 
+
 Apply changes:
 ```
 terraform apply
@@ -56,6 +68,11 @@ terraform show
 Display a specific output value, in this case "ip":
 ```
 terraform output ip
+```
+
+Refresh state by comparing it against cloud infrastructure:
+```
+terraform refresh
 ```
 
 Destroy resources:
