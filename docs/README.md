@@ -50,56 +50,75 @@ Define variables that are output when apply is called. This allows specific valu
 ## Remote State Storage
 Rather than store state locally it is considered best practice to store state using a feature known as remote backends. This allows collaboration across team members too.
 
-# Commands
+# Common [Commands](https://www.terraform.io/docs/commands/index.html)
 
-Apply standard formatting:
+[Initialise](https://www.terraform.io/docs/commands/init.html), or bring up to date, a working directory:
+```
+terraform init
+```
+
+
+Apply standard [formatting](https://www.terraform.io/docs/commands/fmt.html):
 ```
 terraform fmt
 ```
 
-Check validation and report errors with modules, attribute names, and value types:
+
+Check [validation](https://www.terraform.io/docs/commands/validate.html) and report errors with modules, attribute names, and value types:
 ```
 terraform validate
 ```
 
-Display what would be changed if executed:
+
+[Display](https://www.terraform.io/docs/commands/plan.html) what would be changed if executed:
 ```
 terraform plan
 ``` 
 
-Apply changes:
+
+[Apply](https://www.terraform.io/docs/commands/apply.html) changes:
 ```
 terraform apply
 ```
 For Terraform >= 0.12 this will also display execution plan. **Earlier versions** (< 0.12) willl require 'terraform plan' to be run explicitly to see the execution plan.
+
 
 Inspect current state being managed:
 ```
 terraform show
 ```
 
+
 Display a specific output value, in this case "ip":
 ```
 terraform output ip
 ```
+
 
 Refresh state by comparing it against cloud infrastructure:
 ```
 terraform refresh
 ```
 
-Destroy resources:
+
+[Destroy](https://www.terraform.io/docs/commands/destroy.html) resources:
 ```
-terraform destroy"
+terraform destroy
+```
+It is possible to preview behaviour using: 
+```
+terraform plan -destroy
 ```
 
-Mark resource as tainted:
+
+Mark resource as [tainted](https://www.terraform.io/docs/commands/taint.html):
 ```
 terraform taint resource.id
 ```
 where resource.id refers to the resource block name and resource Id. e.g. aws_instance.example
 
-Modify current state (advanced use only):
+
+Modify current [state](https://www.terraform.io/docs/commands/state/index.html) (advanced use only):
 ```
-terraform state
+terraform state <subcommand>
 ```
