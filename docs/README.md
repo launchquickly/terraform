@@ -13,8 +13,21 @@ terraform init
 ## [Resources](https://www.terraform.io/docs/configuration/resources.html)
 Defines a piece of infrastructure, whether physical, such as an EC2 instance, or logical, such as a Heroku app.
 
-## Provisioner
+## [Provisioners](https://www.terraform.io/docs/provisioners/)
 Peforms initial setup or configuration on your instances using shell scripts or configuration manangement tools.
+
+Are a **last resort** and other mechanisms to consider before contemplating using as part of Terraform include:
+- Build images which have been configured already using a tool such as [Packer](https://www.packer.io/).
+- Instead of having a provisioner pass data in determine whether it is available via [cloud-init(]https://cloudinit.readthedocs.io/en/latest/)
+- Use local-exec to run CLI for target system where that isn't yet supported in its Terraform provider. Consider opening an issue to have this added too.
+
+*provisioner* blocks can be declared within *resource* blocks. Usually, but not always (e.g. local-exec), they must include a *connection* block to allow Terraform to communicate with the server.
+
+Provisioners **only** run during creation unless configured as a destroy-time provisioner when it will run before the resource is destroyed.
+
+If more than one provisioner is specified within a resource they will run in the order they are declared.
+
+Failure behaviour can be specified as either *fail*, the default, or *continue*, which will ignore the error.
 
 ## Tainted
 Terraform will error and mark a resource as **tainted** if it is successfully created but fails during provisioning. Subsequent execution plans will remove tainted resources and create new resources to replace them.
