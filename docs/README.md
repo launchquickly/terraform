@@ -47,8 +47,23 @@ Provisioners can also be defined to run only during a destroy operation to pefor
 ## Output variables
 Define variables that are output when apply is called. This allows specific values of interest to be displayed from the thousands available.
 
-## Remote State Storage
+## [Remote State Storage](https://www.terraform.io/docs/state/remote.html)
 Rather than store state locally it is considered best practice to store state using a feature known as remote backends. This allows collaboration across team members too.
+
+## [Workspaces](https://www.terraform.io/docs/state/workspaces.html)
+Persistent data stored in a [backend ](https://www.terraform.io/docs/backends/index.html) belongs to a workspace. There is always a "default" workspace. In addition some backends support *multiple* named backends, allowing multiple states to be associated with a single configuration.
+
+Running a terraform plan whilst in one workspace will not affect the other. It is possible to determine the current workspace using:
+```
+${terraform.workspace}
+```
+this can be used to change behavior based on workspace.
+
+Workspaces are convenient for switching between multiple instances of a single configuration with a single backend to test a set of changes before modifying the main production infrastructure. It is common that a workspace might be used to test a feature branch before merging to master or trunk. Workspaces and branches used in this way can be destroyed after the merge.
+
+Workspaces are not suitable for serving different development stages or teams as these often need to have different credentials or backends.
+
+Similarly workspaces should not be used for system decomposition as this should be done using architectural boundaries with each subsytem in the architecture having its own configuration and backend. 
 
 # Common [Commands](https://www.terraform.io/docs/commands/index.html)
 
