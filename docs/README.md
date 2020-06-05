@@ -65,6 +65,18 @@ Workspaces are not suitable for serving different development stages or teams as
 
 Similarly workspaces should not be used for system decomposition as this should be done using architectural boundaries with each subsytem in the architecture having its own configuration and backend. 
 
+## Modules
+
+Modules can help address organisation, encapsulation, re-use and consistency and best practice issues as terraform configurations become more complex.
+
+They allow:
+- organising configuration into logical components
+- encapsulating distinct areas together reducing the chance and impact of errors
+- reuse of configurations to save time and effort
+- help enforce consistency and best practices
+
+Modules are directories containing one or more Terraform configuration files and are called using module blocks and can be loaded from the local filesystem, or a remote resource.
+
 # Common [Commands](https://www.terraform.io/docs/commands/index.html)
 
 [Initialise](https://www.terraform.io/docs/commands/init.html), or bring up to date, a working directory:
