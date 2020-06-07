@@ -18,7 +18,7 @@ Peforms initial setup or configuration on your instances using shell scripts or 
 
 Are a **last resort** and other mechanisms to consider before contemplating using as part of Terraform include:
 - Build images which have been configured already using a tool such as [Packer](https://www.packer.io/).
-- Instead of having a provisioner pass data in determine whether it is available via [cloud-init(]https://cloudinit.readthedocs.io/en/latest/)
+- Instead of having a provisioner pass data in determine whether it is available via [cloud-init](https://cloudinit.readthedocs.io/en/latest/)
 - Use local-exec to run CLI for target system where that isn't yet supported in its Terraform provider. Consider opening an issue to have this added too.
 
 *provisioner* blocks can be declared within *resource* blocks. Usually, but not always (e.g. local-exec), they must include a *connection* block to allow Terraform to communicate with the server.
@@ -75,11 +75,34 @@ They allow:
 - reuse of configurations to save time and effort
 - help enforce consistency and best practices
 
-Modules are directories containing one or more Terraform configuration files and are called using module blocks and can be loaded from the local filesystem, or a remote resource.
+Modules are directories containing one or more Terraform configuration files and are called using module blocks and can be loaded from the local filesystem, or a remote resource. After adding, removing or modifying *module* blocks you must re-run *terrform init* to allow terraform to adjust the installed modules. To upgrade modules you need to use the *- upgrade* option.
+
+
+[Input variables](https://www.terraform.io/docs/configuration/variables.html) serve as parameters for modules and allowing modules to be used in different configurations. They are declared in a *variable* block with a name that must be unique within the module and can be any identifier, **other** than *source, version, providers, count, for_each, lifecycle, depends_on and locals*, which are reserved meta-arguments. Optionally a *type* and *default* arguments can be specified along with a *description* to document it.
+
+[Terraform Registry](https://registry.terraform.io/) hosts and [makes searchable and retrievable](https://www.terraform.io/docs/registry/modules/use.html) a number of public modules. When referencing a registry module the syntax is: <NAMESPACE>/<NAME>/<PROVIDER>, e.g. hashicorp/consul/aws and can be referenced in a configuration by:
+```
+module "consul" {
+    source = "hashicorp/consol/aws"
+    version = "0.1.0"
+}
+```
+
+[Semantic versioning](https://semver.org/) is the recommended and usual way to version modules.
+
+It is [recommended](https://www.terraform.io/docs/configuration/modules.html#module-versions) that external modules be **explicitly** constrained to avoid unwanted changes
 
 ### Private Module Registry
 
 Private module registries can be used to create and confidentially share infrastructure modules within an organisation. Terraform Cloud provides this as a managed capability but there are other providers. A private module registry allows the import and management of a Terraform module from github or other version control systems.
+
+Private registry module source need to also include the hostname: <HOSTNAME>/<NAMESPACE>/<NAME>/<PROVIDER>
+```
+module "consul" {
+    source = "app.terraform.io/launchquickly/vpc/aws"
+    version = "0.1.0"
+}
+```
 
 ### Code organisation
 
