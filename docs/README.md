@@ -81,6 +81,12 @@ Modules are directories containing one or more Terraform configuration files and
 
 Private module registries can be used to create and confidentially share infrastructure modules within an organisation. Terraform Cloud provides this as a managed capability but there are other providers. A private module registry allows the import and management of a Terraform module from github or other version control systems.
 
+### Code organisation
+
+Monolithic configuration consists of a single main configuration file in a single directory, with a single state file. It may be possible to manage small configurations this way but it is not recommended.
+
+
+
 # Common [Commands](https://www.terraform.io/docs/commands/index.html)
 
 [Initialise](https://www.terraform.io/docs/commands/init.html), or bring up to date, a working directory:
