@@ -81,6 +81,7 @@ Data resources have the same dependency resolution behaviour as managed resource
 *count*, *for_each* and *provider* meta-arguments are available too but *lifecycle* is not currently.
 
 ## Tainted
+
 Terraform will error and mark a resource as **tainted** if it is successfully created but fails during provisioning. Subsequent execution plans will remove tainted resources and create new resources to replace them.
 
 It is possible to mark a resource as tainted which will destroy and recreate it on the next execution.
@@ -88,6 +89,7 @@ It is possible to mark a resource as tainted which will destroy and recreate it 
 Provisioners can also be defined to run only during a destroy operation to peform system cleanup, data extraction, etc.
 
 ## Input variables
+
 - Defined in any *.tf file with an optional default value.
 - Referenced via prefix var. e.g. var.region
 - Assigned either via command-line, from a file, environment varialbes or UI input. 
@@ -96,12 +98,31 @@ Provisioners can also be defined to run only during a destroy operation to pefor
 - Lists and Maps data types supported
 
 ## Output variables
+
 Define variables that are output when apply is called. This allows specific values of interest to be displayed from the thousands available.
 
+## [State Locking](https://www.terraform.io/docs/state/locking.html)
+
+If supported by your backend, locking state will occur for all operations that could involve writing state. If state locking fails, Terraform will not continue. You can disable state locking with the *-lock* flag but it is **not** recommended.
+
+You can [force-unlock](https://www.terraform.io/docs/commands/force-unlock.html) to manually unlock state if unlocking failed. **Be extermely careful with this command.**
+
+## [Sensitive data in state](https://www.terraform.io/docs/state/sensitive-data.html)
+
+Terraform can end-up storing sensitive data depending on the resources being managed. Local state will store state in plain-text JSON files. Remote state is only ever held in memory by Terraform but how it is stored will depend on the specifics of the back-end.
+
+Treat Terraform state as sensitive data in these circumstances. Storing state remotely can provide better security as some backends can be configured to encrypt state data at rest. Some possible options include Terraform Cloud and S3 backend both of which can support encryption at rest and TLS in transit.
+
 ## [Remote State Storage](https://www.terraform.io/docs/state/remote.html)
+
 Rather than store state locally it is considered best practice to store state using a feature known as remote backends. This allows collaboration across team members too.
 
+## [Refresh](https://www.terraform.io/docs/commands/refresh.html)
+
+Refreshing state can reconcile state Terraform knows about via state file with real-world infrastructure. It will not modify infrastructure but modifies the state file and **could** cause changes during the next plan or apply.
+
 ## [Workspaces](https://www.terraform.io/docs/state/workspaces.html)
+
 Persistent data stored in a [backend ](https://www.terraform.io/docs/backends/index.html) belongs to a workspace. There is always a "default" workspace. In addition some backends support *multiple* named backends, allowing multiple states to be associated with a single configuration.
 
 Running a terraform plan whilst in one workspace will not affect the other. It is possible to determine the current workspace using:
@@ -228,7 +249,7 @@ terraform output ip
 ```
 
 
-Refresh state by comparing it against cloud infrastructure:
+[Refresh](https://www.terraform.io/docs/commands/refresh.html) state by comparing it against cloud infrastructure:
 ```
 terraform refresh
 ```
