@@ -77,6 +77,10 @@ They allow:
 
 Modules are directories containing one or more Terraform configuration files and are called using module blocks and can be loaded from the local filesystem, or a remote resource.
 
+### Private Module Registry
+
+Private module registries can be used to create and confidentially share infrastructure modules within an organisation. Terraform Cloud provides this as a managed capability but there are other providers. A private module registry allows the import and management of a Terraform module from github or other version control systems.
+
 # Common [Commands](https://www.terraform.io/docs/commands/index.html)
 
 [Initialise](https://www.terraform.io/docs/commands/init.html), or bring up to date, a working directory:
@@ -149,3 +153,13 @@ Modify current [state](https://www.terraform.io/docs/commands/state/index.html) 
 ```
 terraform state <subcommand>
 ```
+
+# References:
+
+- [Terraform Documentation](https://project-awesome.org/shuaibiyy/awesome-terraform)
+- [Awesome Terraform](https://project-awesome.org/shuaibiyy/awesome-terraform)
+
+# TODO
+
+- Learn about [Terragrunt](https://project-awesome.org/shuaibiyy/awesome-terraform) to see if it enables [IaC Pipelines](https://medium.com/@kief/https-medium-com-kief-using-pipelines-to-manage-environments-with-infrastructure-as-code-b37285a1cbf5).
+- Investigate [Open Policy Agent](https://project-awesome.org/shuaibiyy/awesome-terraform) | [OPA is to Policy Automation as Terraform is to IaC](hhttps://www.scalr.com/blog/opa-is-to-policy-automation-as-terraform-is-to-iac/)
