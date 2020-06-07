@@ -91,7 +91,9 @@ State separation adds complexity but is a more mature usage of Terraform. There 
 - directories
 - workspaces
 
-Workspace separated environments use the same Terraform code but different state files, which is useful if you want the environments to stay as similar to each other as possible. For each environment you will need:
+**Directory** separated environments are pretty much what you would imagnine. They shrink the blast-radius of your Terraform runs having separate state in each envs directory. This does mean that there is a reliance on a level of duplication in code across environment directories. This can however be useful where environments need to differ but also opens up the risk of drift between environments. Using modules to encapsulate changes should be considered to combat drift.
+
+**Workspace** separated environments use the same Terraform code but different state files, which is useful if you want the environments to stay as similar to each other as possible. For each environment you will need:
 - a named workspace, e.g. dev, prod, etc
 - a named varibales.tf file, e.g. dev.tf, prod.tf etc
 You can then use the commands similar to the below to work on and apply changes to specific enviroments:
@@ -101,6 +103,10 @@ terraform workspace select dev
 terraform apply -var-file=dev.tfvars
 ```
 When you use the default workspace with the local backend, your terraform.tfstate file is stored in the root directory. Adding additional workspaces stores and manages state files in the directory terraofrm.tfstate.d using subdirectories named after the workspace/env.
+
+There are pluses and minuses to the use of directory or workspace separation. Workspaces are ideal for creating exact replica environments and directory separation is more useful for isolating and making changes such as promoting change through a delivery pipeline.
+
+#TODO investigate how IaC Pipelines and/or Terragrunt may be a 3rd option.
 
 
 # Common [Commands](https://www.terraform.io/docs/commands/index.html)
