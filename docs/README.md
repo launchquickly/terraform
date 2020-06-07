@@ -85,7 +85,7 @@ Private module registries can be used to create and confidentially share infrast
 
 Monolithic configuration consists of a single main configuration file in a single directory, with a single state file. It may be possible to manage small configurations this way but it is not recommended.
 
-
+Organising configuration into separate environment files, for instance dev.tf and prod.tf, but in the same directory is a bad idea as Terraform loads all configuration files within the directory. This will lead to changes meant for dev affecting prod because of the difficulty of having dependencies within the config, either explicit and obvious or hidden and easy to miss.
 
 # Common [Commands](https://www.terraform.io/docs/commands/index.html)
 
