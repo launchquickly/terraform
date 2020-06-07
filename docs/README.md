@@ -87,6 +87,22 @@ Monolithic configuration consists of a single main configuration file in a singl
 
 Organising configuration into separate environment files, for instance dev.tf and prod.tf, but in the same directory is a bad idea as Terraform loads all configuration files within the directory. This will lead to changes meant for dev affecting prod because of the difficulty of having dependencies within the config, either explicit and obvious or hidden and easy to miss.
 
+State separation adds complexity but is a more mature usage of Terraform. There are 2 recognised methods to separate state between environments:
+- directories
+- workspaces
+
+Workspace separated environments use the same Terraform code but different state files, which is useful if you want the environments to stay as similar to each other as possible. For each environment you will need:
+- a named workspace, e.g. dev, prod, etc
+- a named varibales.tf file, e.g. dev.tf, prod.tf etc
+You can then use the commands similar to the below to work on and apply changes to specific enviroments:
+```
+#terraform workspace new dev
+terraform workspace select dev
+terraform apply -var-file=dev.tfvars
+```
+When you use the default workspace with the local backend, your terraform.tfstate file is stored in the root directory. Adding additional workspaces stores and manages state files in the directory terraofrm.tfstate.d using subdirectories named after the workspace/env.
+
+
 # Common [Commands](https://www.terraform.io/docs/commands/index.html)
 
 [Initialise](https://www.terraform.io/docs/commands/init.html), or bring up to date, a working directory:
