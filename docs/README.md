@@ -229,6 +229,14 @@ There are pluses and minuses to the use of directory or workspace separation. Wo
 
 #TODO investigate how IaC Pipelines and/or Terragrunt may be a 3rd option.
 
+## [Debugging Terraform](https://www.terraform.io/docs/internals/debugging.html)
+
+Terraform has detailed logs which can be enabled to log to *stderr* by setting the *TF_LOG* environment variable. It can be set to any value which will enable logging at the TRACE level but alternatively specific log levels can be set by using one of the follow values: *TRACE, DEBUG, INFO, WARN* or *ERROR*.
+
+*TF_LOG_PATH* if set can be used to append to a specific file when logging is enabled.
+
+If Terraform ever crashes it saves a log file with debug logs from the session to *crash.log*.
+
 
 # Common [Commands](https://www.terraform.io/docs/commands/index.html)
 
