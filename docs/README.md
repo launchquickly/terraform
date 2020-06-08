@@ -113,9 +113,35 @@ Terraform can end-up storing sensitive data depending on the resources being man
 
 Treat Terraform state as sensitive data in these circumstances. Storing state remotely can provide better security as some backends can be configured to encrypt state data at rest. Some possible options include Terraform Cloud and S3 backend both of which can support encryption at rest and TLS in transit.
 
-## [Remote State Storage](https://www.terraform.io/docs/state/remote.html)
+## [Backends](https://www.terraform.io/docs/backends/index.html)
 
-Rather than store state locally it is considered best practice to store state using a feature known as remote backends. This allows collaboration across team members too.
+Backends determine how state is loaded and how operations such as *apply* are executed. By default the backend is a "local". There are number of [backend types](https://www.terraform.io/docs/backends/types/index.html) available. These are defined as either:
+- **Standard**: state management, functionality covered in [State Storage & Locking](https://www.terraform.io/docs/backends/state.html)
+- **Enhanced**: Everything in standard plus [remote operations](https://www.terraform.io/docs/backends/operations.html)
+
+Rather than store state locally it is considered best practice to store state using a feature known as [remote backends]https://www.terraform.io/docs/state/remote.html). This allows collaboration across team members too and keeps sensitive information off of disk. 
+
+Backends are configured in the *terraform* section, configuration will be specific to the backend type:
+```
+terraform {
+    backend "consul" {
+        address = "demo.consul.io"
+        scheme  = "https"
+        path    = "example_app/terraform_state"
+    }
+}
+```
+
+When configuring a backend for the first time you will be given the option to migrate state to the new backend.
+
+Partial configuration of backends allows omitting certain arguments to avoid storing secrets, such as access keys, wihtin the main configuration. This means that the remaining configuration arguments need to be provided by one of:
+- Interactively
+- A configuration file specified via the *init* command using the *-backend-config=PATH* option.
+- Command-line key/value pairs in the *init* command using the *-backend-config="KEY=VALUE"* option.
+
+When using a non-local backend will not persist the state anywhere on disk. Except to prevent data loss in the case of a non-recoverable error where writing the state to the backend failed. If this happens the user must manually push the state to the remote backend once the error is resolved.
+
+[Remote operations](https://www.terraform.io/docs/backends/operations.html) are currently only supported by the *[remote](https://www.terraform.io/docs/backends/types/remote.html)* backend with [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html) is the only remote execution environment that supports it.
 
 ## [Refresh](https://www.terraform.io/docs/commands/refresh.html)
 
