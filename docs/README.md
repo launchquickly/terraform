@@ -227,7 +227,40 @@ When you use the default workspace with the local backend, your terraform.tfstat
 
 There are pluses and minuses to the use of directory or workspace separation. Workspaces are ideal for creating exact replica environments and directory separation is more useful for isolating and making changes such as promoting change through a delivery pipeline.
 
+### Stack configurations
+
+Typical Stack structures within an organisation might decompose into something similar to the below, possibly managed by different teams:
+
+| Level       | Group      | Component Configuration                          | 
+| ------------|:----------:|:------------------------------------------------:|
+| Network     | Network    | VPC/Subnets                                      |
+| Security    | Security   | Security Groups/IAM                              |
+| Data (DBA)  | DBA        | RDS                                              |
+| Application | Developers | App Load Balancers/Auto Scaling Groups/Nomad/K8s |
+
+Decomposition has several benefits, both at the code but also reducing the blast radius of changes, allows different rates of change as well as emphasisiing code re-use through the use of modules. The use of separate workspaces also allows that permissions and responsibilities can be managed across teams.
+
+Splitting and structuring at architectural and/or team boundaries also ensures clear and known responsibilities as well as allowing changes to occur in parallel.
+
 #TODO investigate how IaC Pipelines and/or Terragrunt may be a 3rd option.
+
+## [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html)
+
+Is an application that helps teams use Terraform together providing consistent reliable environments, shared state, secret data controls, access controls for approving changes to infrastructure, private module registry, and policy controls.
+
+Structure of each [workspaces](https://www.terraform.io/docs/cloud/workspaces/index.html) in Terraform Cloud
+- associated with configuration
+- provide variables for configuration files
+- Runs are scheduled/queued:
+-- plan stage
+-- Sentinel stage
+-- apply stage
+- state file
+- permissions set on workspace
+
+Typical Stack structures can leaverage workspaces to gain and operationalise the benefits outlined above in [Stack configurations](#stack-configurations)
+
+The use of separate workspaces also allows that permissions and responsibilities can be managed across teams.
 
 ## [Debugging Terraform](https://www.terraform.io/docs/internals/debugging.html)
 
@@ -236,7 +269,6 @@ Terraform has detailed logs which can be enabled to log to *stderr* by setting t
 *TF_LOG_PATH* if set can be used to append to a specific file when logging is enabled.
 
 If Terraform ever crashes it saves a log file with debug logs from the session to *crash.log*.
-
 
 # Common [Commands](https://www.terraform.io/docs/commands/index.html)
 
