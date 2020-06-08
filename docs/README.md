@@ -1,6 +1,7 @@
 # Concepts
 
 ## [Providers](https://www.terraform.io/docs/configuration/providers.html)
+
 A plugin that Terraform uses to translate the API interactions with a service, such as AWS or DataDog. 
 
 Providers define the resource types available for it and the arguments each resource type accepts. Providers require configuration, which will be specific to each provider type.
@@ -9,8 +10,11 @@ When a new provider is configured is must be initialised before it is used to do
 ```
 terraform init
 ```
+*terraform init* cannot automatically download Community providers and these need to be manually installed into the user plugins directory located at ~/.terraform.d/plugins.
+
 
 ## [Resources](https://www.terraform.io/docs/configuration/resources.html)
+
 Defines a piece of infrastructure, whether physical, such as an EC2 instance, or logical, such as a Heroku app.
 ```
 resource "aws_instance" "web" {
@@ -33,6 +37,7 @@ Other meta-arguments available include:
 Local-only resource types operate only within Terraform itself, calculating some results and saving those results in state for future use. They are typcially used for generating random ids, helping to self-sign TLS certificates or similar.
 
 ## [Provisioners](https://www.terraform.io/docs/provisioners/)
+
 Peforms initial setup or configuration on your instances using shell scripts or configuration manangement tools.
 
 Are a **last resort** and other mechanisms to consider before contemplating using as part of Terraform include:
@@ -81,7 +86,7 @@ Data resources have the same dependency resolution behaviour as managed resource
 *count*, *for_each* and *provider* meta-arguments are available too but *lifecycle* is not currently.
 
 ## Tainted
-
+The exception is 
 Terraform will error and mark a resource as **tainted** if it is successfully created but fails during provisioning. Subsequent execution plans will remove tainted resources and create new resources to replace them.
 
 It is possible to mark a resource as tainted which will destroy and recreate it on the next execution.
@@ -235,7 +240,7 @@ Typical Stack structures within an organisation might decompose into something s
 | ------------|:----------:|:------------------------------------------------:|
 | Network     | Network    | VPC/Subnets                                      |
 | Security    | Security   | Security Groups/IAM                              |
-| Data (DBA)  | DBA        | RDS                                              |
+| Data        | DBA        | RDS                                              |
 | Application | Developers | App Load Balancers/Auto Scaling Groups/Nomad/K8s |
 
 Decomposition has several benefits, both at the code but also reducing the blast radius of changes, allows different rates of change as well as emphasisiing code re-use through the use of modules. The use of separate workspaces also allows that permissions and responsibilities can be managed across teams.
