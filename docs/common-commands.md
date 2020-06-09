@@ -28,7 +28,7 @@ terraform plan
 ```
 terraform apply
 ```
-For Terraform >= 0.12 this will also display execution plan. **Earlier versions** (< 0.12) willl require 'terraform plan' to be run explicitly to see the execution plan.
+For Terraform >= 0.12 this will also display execution plan. **Earlier versions** (< 0.12) willl require `terraform plan` to be run explicitly to see the execution plan.
 
 
 Inspect current state being managed:
