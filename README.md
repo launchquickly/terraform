@@ -14,6 +14,7 @@ Project to collect and document terraform related examples, practices and tools
 
 - [Terraform Documentation](https://project-awesome.org/shuaibiyy/awesome-terraform)
 - [Awesome Terraform](https://project-awesome.org/shuaibiyy/awesome-terraform)
+- [A Comprehensive Guide to Terraform](https://blog.gruntwork.io/a-comprehensive-guide-to-terraform-b3d32832baca)
 
 # Other
 

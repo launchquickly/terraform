@@ -14,4 +14,5 @@
 - Investigate [Open Policy Agent](https://project-awesome.org/shuaibiyy/awesome-terraform) | [OPA is to Policy Automation as Terraform is to IaC](hhttps://www.scalr.com/blog/opa-is-to-policy-automation-as-terraform-is-to-iac/)
 - Read [The Right Way to Store Secrets using Parameter Store](https://aws.amazon.com/blogs/mt/the-right-way-to-store-secrets-using-parameter-store/) and compare with use of [Vault](https://www.terraform.io/docs/providers/vault/index.html) for secrets and other suggestions at [How can I manage secrets in .tf and .tfstate?](https://devops.stackexchange.com/questions/79/how-can-i-manage-secrets-in-tf-and-tfstate)
 - Look into Segment.io [Stack AWS](https://github.com/segmentio/stack) AWS Terraform configuration. 
+- Read [Secure Terraform Delivery Pipeline – Best Practices Part 1/2](https://blog.gft.com/pl/2020/03/04/secure-terraform-delivery-pipeline-best-practices-part-1-2/)
 
