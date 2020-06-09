@@ -3,13 +3,38 @@
 **Objective**: Set-up and install the necessary software to provide a Vagrant based development environment for Terraform
 
 Vagrant based development environment for developing with Terraform 0.12. This will consist of 2 VMS:
-- **tf-code** - Ubuntu Desktop VM
-- **tf-server** - Ubuntu Server VM
+
+- **tf-code** - desktop environment for running IDE etc
+- **tf-server** - server environment to host and run code within
+
 with SSH communication configured and the necessary software installed.
 
 Please read [VS Code Remote Development](https://code.visualstudio.com/docs/remote/remote-overview), for more information on this sort of set-up, if interested.
 
 Vagrant VMs are being used for both desktop and server configurations to make set-up and configuration as repeatable and automated as possible.
+
+## VM configuration details
+
+### tf-code
+
+- Ubuntu 20.04 desktop 
+    - UK keyboard and formats set-up
+    - Timezone set to UTC
+- VS Code 
+    - remote SSH extension
+- Configuration
+    - SSH keys and config to connect to ts-server (terraform.scot.local)
+
+### tf-server
+
+- Ubuntu 20.04 server
+    - UK keyboard and formats set-up
+    - Timezone set to UTC
+- Git 2.x
+- Terraform 0.12.x 
+    - tab completion support installed
+- master branch of github.com/launchquickly/terraform repository cloned to /home/vagrant/terraform
+    - configured for ssh access
 
 ## Pre-requisites
 
@@ -35,46 +60,18 @@ C:\Users\AUser\dev\terraform\dev> vagrant up
 7. Within VS Code select the "Remote Explorer" view via the icons at the top left
 8. Within the SSH TARGETS view right-click on the "terraform.scot.local" target and select "Connect to Host in Current Window". This will establish the remote connection with tf-server VM and install the extensions VS Code needs.
 9. Select directory you wish to work from on tf-server. /home/vagrant or /home/vagrant/terraform are both reasonable starting points.
+10. Install the vscode.terraform extension via VS Code
 
-## VM configuration details
+### tf-server - these steps can all be executed from tf-code via VS Code remote terminal session (Ctrl + Shift + ` shortcut to open) 
 
-### tf-code
-
-- Ubuntu 20.04 desktop 
--- UK keyboard and formats set-up
--- Timezone set to UTC
-- VS Code 
--- remote SSH extension
-- Configuration
--- SSH keys and config to connect to ts-server (terraform.scot.local)
-
-### tf-server
-
-- Ubuntu 20.04 server
--- UK keyboard and formats set-up
--- Timezone set to UTC
-- Git 2.x
-- Terraform 0.12.x 
--- tab completion support installed
-- master branch of github.com/launchquickly/terraform repository cloned to /home/vagrant/terraform
--- configured for ssh access
-
-## Manual steps
-
-### tf-code
-
-1. Install the vscode.terraform extension
-
-### tf-server
-
-1. (Optional) Configure git set-up
-1.1. Set global gitconfig options, otherwise vagrant name and email will be used:
-```
+11. (Optional) Configure git set-up
+11.1. Set global gitconfig options, otherwise vagrant name and email will be used:
+```console
 vagrant@tf-server:~$ git config --global user.name "John Doe"
 vagrant@tf-server:~$ git config --global user.email johndoe@example.com
 ```
-2. (Optional) Generate and upload ssh keys for git operations with github.com or similar:
-2.1. Generate public/private keys. Note if you set a passphrase (recommended) you will have to use commandline to push changes to github.com, etc as VS code does not yet handle passphrases for remote repositories.
+12. (Optional) Generate and upload ssh keys for git operations with github.com or similar:
+12.1. Generate public/private keys. Note if you set a passphrase (recommended) you will have to use commandline to push changes to github.com, etc as VS code does not yet handle passphrases for remote repositories.
 ```console
 vagrant@tf-server:~$ ssh-keygen -t rsa -b 4096 -C "johndoe@example.com"
 Generating public/private rsa key pair.
@@ -99,13 +96,13 @@ The key's randomart image is:
 +----[SHA256]-----+
 vagrant@tf-server:~$
 ```
-2.2. Copy contents of public key to Github account, or similar.
-```
-cat ~/.ssh/id_rsa.pub
-```
-2.3. Add any necessary host information to enable git ssh access to ~/.ssh/config. e.g.:
+12.2. Copy contents of public key to Github account, or similar.
 ```console
-vi ~/.ssh/config
+vagrant@tf-server:~$ cat ~/.ssh/id_rsa.pub
+```
+12.3. Add any necessary host information to enable git ssh access to ~/.ssh/config. e.g.:
+```console
+vagrant@tf-server:~$ vi ~/.ssh/config
 
 Host github.com
   User johndoe
@@ -115,4 +112,4 @@ Host github.com
   Port 443
 
 ```
-3. (Optional) Any necessary configuration of credentials/providers for AWS, Terraform Cloud or similar.
+13. (Optional) Any necessary configuration of credentials/providers for AWS, Terraform Cloud or similar.
