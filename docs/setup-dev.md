@@ -33,6 +33,7 @@ Vagrant VMs are being used for both desktop and server configurations to make se
 - Git 2.x
 - Terraform 0.12.x 
     - tab completion support installed
+- AWS CLI v2
 - master branch of github.com/launchquickly/terraform repository cloned to /home/vagrant/terraform
     - configured for ssh access
 

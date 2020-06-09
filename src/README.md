@@ -1,3 +1,3 @@
 # Examples
 
-- [Placehdolder](./example/example.md)
+- [AWS - Simple cluster](./aws-simple-cluster/README.md)
