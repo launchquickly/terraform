@@ -119,7 +119,9 @@ Treat Terraform state as sensitive data in these circumstances. Storing state re
 
 ## [Backends](https://www.terraform.io/docs/backends/index.html)
 
-Backends determine how state is loaded and how operations such as `apply` are executed. By default the backend is a "local". There are number of [backend types](https://www.terraform.io/docs/backends/types/index.html) available. These are defined as either:
+Backends determine how state is loaded and how operations such as `apply` are executed. By default the backend is "local". 
+
+There are number of [backend types](https://www.terraform.io/docs/backends/types/index.html) available. These are defined as either:
 - **Standard**: state management, functionality covered in [State Storage & Locking](https://www.terraform.io/docs/backends/state.html)
 - **Enhanced**: Everything in standard plus [remote operations](https://www.terraform.io/docs/backends/operations.html)
 
