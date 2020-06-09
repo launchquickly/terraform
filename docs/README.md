@@ -10,7 +10,7 @@ When a new provider is configured is must be initialised before it is used to do
 ```
 terraform init
 ```
-*terraform init* cannot automatically download Community providers and these need to be manually installed into the user plugins directory located at ~/.terraform.d/plugins.
+`terraform init` cannot automatically download Community providers and these need to be manually installed into the user plugins directory located at ~/.terraform.d/plugins.
 
 
 ## [Resources](https://www.terraform.io/docs/configuration/resources.html)
@@ -22,9 +22,9 @@ resource "aws_instance" "web" {
     instance_type = "t2.micro"
 }
 ```
-The above example declares a resource type ("aws_instance") with a given name ("web"). The combination of both must be unique within a module. Resource types belong to a specific provider. [Terraforms provder documentation](https://www.terraform.io/docs/providers/index.html) details providers and which resources are available along with which arguments to use to configure them.
+The above example declares a resource type (`"aws_instance"`) with a given name (`"web"`). The combination of both must be unique within a module. Resource types belong to a specific provider. [Terraforms provder documentation](https://www.terraform.io/docs/providers/index.html) details providers and which resources are available along with which arguments to use to configure them.
 
-Most resource dependencies, if they exist, are handled automatically. However, some dependencies cannot be recongnised implicitly in configuration and if needed the *depends_on* can be used to declare explicit dependencies.
+Most resource dependencies, if they exist, are handled automatically. However, some dependencies cannot be recongnised implicitly in configuration and if needed the `depends_on` can be used to declare explicit dependencies.
 
 Other meta-arguments available include:
 - [depends_on](https://www.terraform.io/docs/configuration/resources.html#depends_on-explicit-resource-dependencies), for specifying hidden dependencies
@@ -43,15 +43,15 @@ Peforms initial setup or configuration on your instances using shell scripts or 
 Are a **last resort** and other mechanisms to consider before contemplating using as part of Terraform include:
 - Build images which have been configured already using a tool such as [Packer](https://www.packer.io/).
 - Instead of having a provisioner pass data in determine whether it is available via [cloud-init](https://cloudinit.readthedocs.io/en/latest/)
-- Use local-exec to run CLI for target system where that isn't yet supported in its Terraform provider. Consider opening an issue to have this added too.
+- Use `local-exec` to run CLI for target system where that isn't yet supported in its Terraform provider. Consider opening an issue to have this added too.
 
-*provisioner* blocks can be declared within *resource* blocks. Usually, but not always (e.g. local-exec), they must include a *connection* block to allow Terraform to communicate with the server.
+`provisioner` blocks can be declared within `resource` blocks. Usually, but not always (e.g. `local-exec`), they must include a `connection` block to allow Terraform to communicate with the server.
 
 Provisioners **only** run during creation unless configured as a destroy-time provisioner when it will run before the resource is destroyed.
 
 If more than one provisioner is specified within a resource they will run in the order they are declared.
 
-Failure behaviour can be specified as either *fail*, the default, or *continue*, which will ignore the error.
+Failure behaviour can be specified as either `fail`, the default, or `continue`, which will ignore the error.
 
 ## [Data Sources](https://www.terraform.io/docs/configuration/data-sources.html)
 
@@ -81,13 +81,12 @@ Data sources are associated with a single data source, which determines the kind
 
 If query constraint arguments are constant values or already known they are read and its state updated during the "refresh" phase. Those that cannot be known until after the configuration is applied are deferred until the apply phase.
 
-Data resources have the same dependency resolution behaviour as managed resources, including *depends_on" which will defer the read until the apply phase.
+Data resources have the same dependency resolution behaviour as managed resources, including `depends_on` which will defer the read until the apply phase.
 
-*count*, *for_each* and *provider* meta-arguments are available too but *lifecycle* is not currently.
+`count`, `for_each` and `provider*`meta-arguments are available too but `lifecycle` is not currently.
 
 ## Tainted
-The exception is 
-Terraform will error and mark a resource as **tainted** if it is successfully created but fails during provisioning. Subsequent execution plans will remove tainted resources and create new resources to replace them.
+Terraform will error and mark a resource as `tainted` if it is successfully created but fails during provisioning. Subsequent execution plans will remove tainted resources and create new resources to replace them.
 
 It is possible to mark a resource as tainted which will destroy and recreate it on the next execution.
 
@@ -99,7 +98,7 @@ Provisioners can also be defined to run only during a destroy operation to pefor
 - Referenced via prefix var. e.g. var.region
 - Assigned either via command-line, from a file, environment varialbes or UI input. 
 - Default file location is terraform.tfvars but others can be used. 
-- -var-file= argyment can be used to specify file name
+- `-var-file=` argyment can be used to specify file name
 - Lists and Maps data types supported
 
 ## Output variables
@@ -108,7 +107,7 @@ Define variables that are output when apply is called. This allows specific valu
 
 ## [State Locking](https://www.terraform.io/docs/state/locking.html)
 
-If supported by your backend, locking state will occur for all operations that could involve writing state. If state locking fails, Terraform will not continue. You can disable state locking with the *-lock* flag but it is **not** recommended.
+If supported by your backend, locking state will occur for all operations that could involve writing state. If state locking fails, Terraform will not continue. You can disable state locking with the `-lock` flag but it is **not** recommended.
 
 You can [force-unlock](https://www.terraform.io/docs/commands/force-unlock.html) to manually unlock state if unlocking failed. **Be extermely careful with this command.**
 
@@ -120,13 +119,13 @@ Treat Terraform state as sensitive data in these circumstances. Storing state re
 
 ## [Backends](https://www.terraform.io/docs/backends/index.html)
 
-Backends determine how state is loaded and how operations such as *apply* are executed. By default the backend is a "local". There are number of [backend types](https://www.terraform.io/docs/backends/types/index.html) available. These are defined as either:
+Backends determine how state is loaded and how operations such as `apply` are executed. By default the backend is a "local". There are number of [backend types](https://www.terraform.io/docs/backends/types/index.html) available. These are defined as either:
 - **Standard**: state management, functionality covered in [State Storage & Locking](https://www.terraform.io/docs/backends/state.html)
 - **Enhanced**: Everything in standard plus [remote operations](https://www.terraform.io/docs/backends/operations.html)
 
 Rather than store state locally it is considered best practice to store state using a feature known as [remote backends]https://www.terraform.io/docs/state/remote.html). This allows collaboration across team members too and keeps sensitive information off of disk. 
 
-Backends are configured in the *terraform* section, configuration will be specific to the backend type:
+Backends are configured in the `terraform` section, configuration will be specific to the backend type:
 ```
 terraform {
     backend "consul" {
@@ -141,12 +140,12 @@ When configuring a backend for the first time you will be given the option to mi
 
 Partial configuration of backends allows omitting certain arguments to avoid storing secrets, such as access keys, wihtin the main configuration. This means that the remaining configuration arguments need to be provided by one of:
 - Interactively
-- A configuration file specified via the *init* command using the *-backend-config=PATH* option.
-- Command-line key/value pairs in the *init* command using the *-backend-config="KEY=VALUE"* option.
+- A configuration file specified via the `init` command using the `-backend-config=PATH` option.
+- Command-line key/value pairs in the `init` command using the `-backend-config="KEY=VALUE"` option.
 
 When using a non-local backend will not persist the state anywhere on disk. Except to prevent data loss in the case of a non-recoverable error where writing the state to the backend failed. If this happens the user must manually push the state to the remote backend once the error is resolved.
 
-[Remote operations](https://www.terraform.io/docs/backends/operations.html) are currently only supported by the *[remote](https://www.terraform.io/docs/backends/types/remote.html)* backend with [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html) is the only remote execution environment that supports it.
+[Remote operations](https://www.terraform.io/docs/backends/operations.html) are currently only supported by the *[`remote`](https://www.terraform.io/docs/backends/types/remote.html)* backend with [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html) is the only remote execution environment that supports it.
 
 ## [Refresh](https://www.terraform.io/docs/commands/refresh.html)
 
@@ -178,10 +177,10 @@ They allow:
 - reuse of configurations to save time and effort
 - help enforce consistency and best practices
 
-Modules are directories containing one or more Terraform configuration files and are called using module blocks and can be loaded from the local filesystem, or a remote resource. After adding, removing or modifying *module* blocks you must re-run *terrform init* to allow terraform to adjust the installed modules. To upgrade modules you need to use the *- upgrade* option.
+Modules are directories containing one or more Terraform configuration files and are called using module blocks and can be loaded from the local filesystem, or a remote resource. After adding, removing or modifying `module` blocks you must re-run `terrform init` to allow terraform to adjust the installed modules. To upgrade modules you need to use the `- upgrade` option.
 
 
-[Input variables](https://www.terraform.io/docs/configuration/variables.html) serve as parameters for modules and allowing modules to be used in different configurations. They are declared in a *variable* block with a name that must be unique within the module and can be any identifier, **other** than *source, version, providers, count, for_each, lifecycle, depends_on and locals*, which are reserved meta-arguments. Optionally a *type* and *default* arguments can be specified along with a *description* to document it.
+[Input variables](https://www.terraform.io/docs/configuration/variables.html) serve as parameters for modules and allowing modules to be used in different configurations. They are declared in a `variable` block with a name that must be unique within the module and can be any identifier, **other** than `source`, `version`, `providers`, `count`, `for_each`, `lifecycle`, `depends_on` and `locals`, which are reserved meta-arguments. Optionally a `type` and `default` arguments can be specified along with a `description` to document it.
 
 [Terraform Registry](https://registry.terraform.io/) hosts and [makes searchable and retrievable](https://www.terraform.io/docs/registry/modules/use.html) a number of public modules. When referencing a registry module the syntax is: <NAMESPACE>/<NAME>/<PROVIDER>, e.g. hashicorp/consul/aws and can be referenced in a configuration by:
 ```
@@ -269,8 +268,8 @@ The use of separate workspaces also allows that permissions and responsibilities
 
 ## [Debugging Terraform](https://www.terraform.io/docs/internals/debugging.html)
 
-Terraform has detailed logs which can be enabled to log to *stderr* by setting the *TF_LOG* environment variable. It can be set to any value which will enable logging at the TRACE level but alternatively specific log levels can be set by using one of the follow values: *TRACE, DEBUG, INFO, WARN* or *ERROR*.
+Terraform has detailed logs which can be enabled to log to *stderr* by setting the `TF_LOG` environment variable. It can be set to any value which will enable logging at the TRACE level but alternatively specific log levels can be set by using one of the follow values: `TRACE`, `DEBUG`, `INFO`, `WARN` or `ERROR`.
 
-*TF_LOG_PATH* if set can be used to append to a specific file when logging is enabled.
+`TF_LOG_PATH` if set can be used to append to a specific file when logging is enabled.
 
 If Terraform ever crashes it saves a log file with debug logs from the session to *crash.log*.
