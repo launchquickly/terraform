@@ -45,9 +45,9 @@ Defining `region` is optional but it must be provided either from `AWS_DEFAULT_R
 
 AWS enables the configuration of a cluster of servers. To create this you need to: 
 
-1. Create a [launch configration](https://docs.aws.amazon.com/autoscaling/ec2/userguide/LaunchConfiguration.html), which specifies how to configure each EC2 instance by using the (`aws_launch_configuration`)[https://www.terraform.io/docs/providers/aws/r/launch_configuration.html] resource.
+1. Create a [launch configration](https://docs.aws.amazon.com/autoscaling/ec2/userguide/LaunchConfiguration.html), which specifies how to configure each EC2 instance by using the [`aws_launch_configuration`](https://www.terraform.io/docs/providers/aws/r/launch_configuration.html) resource.
 1.1. The `lifecycle` setting in this example is set to `create_before_destroy` which is the reverse of the default and ensures the replacements are created first and then deletes the old instances.
-2. Associate this with an [Auto Scaling Group (ASG)](https://aws.amazon.com/autoscaling/) by using the [aws_autoscaling_group](https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html) resource.
+2. Associate this with an [Auto Scaling Group (ASG)](https://aws.amazon.com/autoscaling/) by using the [`aws_autoscaling_group`](https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html) resource.
 2.1. `min_size` and `max_size`  specificies the boundaries of the cluster size.
 2.2. `availability_zones` parameter must be specified but rather than hard-coding these use a [`aws_availability_zones`](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) `data` source to fetch a list:
 ```
@@ -75,6 +75,6 @@ In order to distribute the traffic to the servers within the ASG you will need a
 2.3. The CLB configuration should be configured with this security group
 3. Adding a DNS name as an output
 
-## Reference:
+## References:
 - [An Introduction to Terraform](https://blog.gruntwork.io/an-introduction-to-terraform-f17df9c6d180)
 - [A Comprehensive Guide to Building a Scalable Web App on Amazon Web Services - Part 1](https://www.airpair.com/aws/posts/building-a-scalable-web-app-on-amazon-web-services-p1)
