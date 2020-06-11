@@ -32,7 +32,7 @@ Before you can use S3 and DynamoDB as a remote backend they require to be create
 
 Running `terraform init` and then `terraform apply` for [main.tf](./bootstrap/main.tf) locally will deploy and configure both these services. Obviously region, etc configruation should be reviewed first.
 
-Once that is done update [main.tf](./bootstrap/main.tf) with the changes in [main.tf](./remote/main.tf) and add [outputs.tf](./remote/outputs.tf) this configures an `"s3"` `backend` wihin the `terraform` block. Key settings include:
+Once that is done update [bootstrap/main.tf](./bootstrap/main.tf) with the changes in [remote/main.tf](./remote/main.tf) and add [outputs.tf](./remote/outputs.tf) this configures an `"s3"` `backend` wihin the `terraform` block. Key settings include:
 - bucket and dynamodb table exactly match that set-up previously
 - `encrypt` is set to true to enable a second layer of encryption when stored in S3, in addition to the bucket encryption
 - `key` file path is namespaced to indicate the state being stored. e.g. `gloabal` and `s3` path to `terraform.tfstate`
@@ -42,8 +42,8 @@ Running `terraform init` will detect that there is a state file locally and prom
 ## Isolating state files
 
 Defining all of your infrastructure in a single terraform file or single set of files has real risks. Isolating changes across environments and infrastructure areas reduces risk considerabley. There are 2 wasy to do this using terraform:
-- Isolation via workspaces - useful for quick, isolated tests on the same configuration.
-- Isolation via file layout - useful for production use-cases where you need strong separation between environments.
+- **Isolation via workspaces** - useful for quick, isolated tests on the same configuration.
+- **Isolation via file layout** - useful for production use-cases where you need strong separation between environments.
 
 ### Isolation via workspaces
 
@@ -78,24 +78,24 @@ Splitting terraform configuration out into directory and file structures enables
 
 You can further take the isolation concept to the component level which help isolate differnt types of changes from each other and further provide more granular levels to different teams and users.
 
-The [filelayout](./filelayout/) outlines a structure that separates environments into:
+The [filelayout](./filelayout/) directory structure outlines an example of how you might separate and isolate environments into:
 
-- stage - pre-production workloads
-- prod - production workloads
-- mgmt - environment for DevOps tooling
-- global - area for resources used across all environments e.g. S3 and IAM
+- [stage](./filelayout/stage/) - pre-production workloads
+- [prod](./filelayout/prod/) - production workloads
+- [mgmt](./filelayout/mgmt/) - environment for DevOps tooling
+- [global](./filelayout/global/) - area for resources used across all environments e.g. S3 and IAM
 
 Then within each environment there are separate folders at the component level, such as:
 
-- vpc - network topology
-- services - applications, etc
-- data-storage - data stores of different kinds
+- [vpc](./filelayout/stage/vpc/) - network topology
+- [services](./filelayout/stage/services/) - applications, etc
+- [data-storage](./filelayout/stage/data-storage/) - data stores of different kinds
 
 Which can then have standard file naming conventions to make code easier to browse and locate. 
 
-- **variables.tf** Input variables
-- **outputs.tf** Output variables
-- **main.tf** resource and other configuration definitions
+- [variables.tf](./filelayout/stage/data-storage/mysql/variables.tf) Input variables
+- [outputs.tf](./filelayout/stage/data-storage/mysql/outputs.tf) Output variables
+- [main.tf](./filelayout/stage/data-storage/mysql/main.tf) Resource and other configuration definitions
 
 This provides a browsable model of environments and related components which reflect their current state and configuration details. It also provides a much higher level of isolation which means if something does go wrong then it affects a much smaller blast radius.
 
