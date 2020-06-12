@@ -120,5 +120,6 @@ data "terraform_remote_state" "db" {
 This allows various isolated components and indeed environments to publish information about their state that can then be used by other components/environments. This allows data **contracts** to be created across environments and enforce dependencies across isolated layers. 
 
 ## References:
+
 - [How to manage Terraform state](https://blog.gruntwork.io/how-to-manage-terraform-state-28f5697e68fa)
 - [Terraform, VPC, and why you want a tfstate file per env](https://charity.wtf/2016/03/30/terraform-vpc-and-why-you-want-a-tfstate-file-per-env/)
