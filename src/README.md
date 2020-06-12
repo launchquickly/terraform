@@ -12,3 +12,7 @@
 - [AWS - Modules](./aws-modules/README.md)
    - [Basics](./aws-modules/README.md#basics)
    - [Versioning](./aws-modules/README.md#versioning)
+- [AWS - loops & conditionals](./aws-loops-and-more/README.md)
+   - [Loops](./aws-loops-and-more/README.md#loops)
+   - [Conditionals](./aws-loops-and-more/README.md#conditionals)
+   - [Gotchas](./aws-loops-and-more/README.md#gotchas)
