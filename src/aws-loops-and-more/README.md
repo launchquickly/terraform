@@ -102,7 +102,39 @@ In the above example it is the "tag" inline block that is being manipulated. Oth
 
 ### `for` expressions
 
-TODO
+Use when looking to generate or transform items in a list or map. 
+
+Uppercasing each item in a list can be achieved by:
+```
+output "upper_names" {
+  value = [for name in var.user_names : upper(name)]
+}
+```
+
+You can also filter items by specifying a condition:
+```
+output "short_upper_names" {
+  value = [for name in var.user_names : upper(name) if length(name) < 5]
+}
+```
+
+Maps work in a similar way.
+
+And can generate a list result (**NOTE:** [] used):
+```
+output "bios" {
+  value = [for name, role in var.hero_thousand_faces : "${name} is the ${role}"]
+}
+
+```
+
+Or output a map result (**NOTE:** {} used):
+
+```
+output "upper_roles" {
+  value = { for name, role in var.hero_thousand_faces : upper(name) => upper(role) }
+}
+```
 
 ## Conditionals
 
