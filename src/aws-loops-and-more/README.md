@@ -204,7 +204,32 @@ e.g.:
 
 ## Gotchas
 
+### `count` and `for_each` have limitations
+
+1. You cannot reference any resource outputs in `count` or `for_each`
+    - Terraform requires that it can compute `count` and `for_each` during the `plan` phase, *before* any resources are created or modified.
+2. You cannot use `count` or `for_each` within a `module` configuration - this is not *currently* supported (as of 0.12.26)
+
+### Valid plans can fail
+
+For any number of reasons a plan that has run successfully may fail when `apply` is run. i.e. there may be an IAM user with the exact same name.
+
+- Once you start using Terraform, you should only use Terraform
+- If you have existing infrastructure, use the `import` command. See Terraforming reference below for alternative.
+
+### Refactoring can be tricky
+
+Renaming a variable in terraform is not simple. Whenever you consider it also consider:
+1. Always use the `plan` command
+2. Create before destroy
+3. Chaning identifiers requires changing state - `terraform state mv`
+4. Some parameters are immutable - if you change them it will cause a delete and replace
+
+### Eventual consistency is consistent ... eventually
+
+A lot of provider API calls are asynchronous and require propogation so for periods of time you can get inconsistent responses. This can be annoying but first step should be to rerun `terraform apply` as this normally resolves it.
 
 ## References:
 
 - [Terraform tips & tricks: loops, if-statements, and gotchas](https://blog.gruntwork.io/terraform-tips-tricks-loops-if-statements-and-gotchas-f739bbae55f9)
+- [Terraforming](http://terraforming.dtan4.net/)
