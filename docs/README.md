@@ -98,7 +98,7 @@ Provisioners can also be defined to run only during a destroy operation to pefor
 - Referenced via prefix var. e.g. var.region
 - Assigned either via command-line, from a file, environment varialbes or UI input. 
 - Default file location is terraform.tfvars but others can be used. 
-- `-var-file=` argyment can be used to specify file name
+- `-var-file=` argument can be used to specify file name
 - Lists and Maps data types supported
 
 ## Output variables
@@ -125,7 +125,7 @@ There are number of [backend types](https://www.terraform.io/docs/backends/types
 - **Standard**: state management, functionality covered in [State Storage & Locking](https://www.terraform.io/docs/backends/state.html)
 - **Enhanced**: Everything in standard plus [remote operations](https://www.terraform.io/docs/backends/operations.html)
 
-Rather than store state locally it is considered best practice to store state using a feature known as [remote backends]https://www.terraform.io/docs/state/remote.html). This allows collaboration across team members too and keeps sensitive information off of disk. 
+Rather than store state locally it is considered best practice to store state using a feature known as [remote backends](https://www.terraform.io/docs/state/remote.html). This allows collaboration across team members too and keeps sensitive information off of disk. 
 
 Backends are configured in the `terraform` section, configuration will be specific to the backend type:
 ```
@@ -145,7 +145,7 @@ Partial configuration of backends allows omitting certain arguments to avoid sto
 - A configuration file specified via the `init` command using the `-backend-config=PATH` option.
 - Command-line key/value pairs in the `init` command using the `-backend-config="KEY=VALUE"` option.
 
-When using a non-local backend will not persist the state anywhere on disk. Except to prevent data loss in the case of a non-recoverable error where writing the state to the backend failed. If this happens the user must manually push the state to the remote backend once the error is resolved.
+When using a remote backend state will not be persisted anywhere on disk. The exception being to prevent data loss in the case of a non-recoverable error where writing the state to the backend failed. If this happens the user must manually push the state to the remote backend once the error is resolved.
 
 [Remote operations](https://www.terraform.io/docs/backends/operations.html) are currently only supported by the *[`remote`](https://www.terraform.io/docs/backends/types/remote.html)* backend with [Terraform Cloud](https://www.terraform.io/docs/cloud/index.html) is the only remote execution environment that supports it.
 
@@ -155,9 +155,9 @@ Refreshing state can reconcile state Terraform knows about via state file with r
 
 ## [Workspaces](https://www.terraform.io/docs/state/workspaces.html)
 
-Persistent data stored in a [backend ](https://www.terraform.io/docs/backends/index.html) belongs to a workspace. There is always a "default" workspace. In addition some backends support *multiple* named backends, allowing multiple states to be associated with a single configuration.
+Persistent data stored in a [backend ](https://www.terraform.io/docs/backends/index.html) belongs to a workspace. There is always a "default" workspace. In addition some backends support *multiple* named workspaces, allowing multiple states to be associated with a single configuration.
 
-Running a terraform plan whilst in one workspace will not affect the other. It is possible to determine the current workspace using:
+Running a terraform plan whilst in one workspace will not affect the other. It is possible to determine the current workspace using the interpolation sequence:
 ```
 ${terraform.workspace}
 ```
@@ -171,7 +171,7 @@ Similarly workspaces should not be used for system decomposition as this should 
 
 ## Modules
 
-Modules can help address organisation, encapsulation, re-use and consistency and best practice issues as terraform configurations become more complex.
+Modules can help address organisation, encapsulation, re-use, consistency and good practice issues as terraform configurations become more complex.
 
 They allow:
 - organising configuration into logical components
@@ -179,12 +179,12 @@ They allow:
 - reuse of configurations to save time and effort
 - help enforce consistency and best practices
 
-Modules are directories containing one or more Terraform configuration files and are called using module blocks and can be loaded from the local filesystem, or a remote resource. After adding, removing or modifying `module` blocks you must re-run `terrform init` to allow terraform to adjust the installed modules. To upgrade modules you need to use the `- upgrade` option.
+Modules are directories containing one or more Terraform configuration files and are called using module blocks and can be loaded from the local filesystem, or a remote resource. After adding, removing or modifying `module` blocks you must re-run `terrform init` to allow terraform to adjust the installed modules. To upgrade modules you need to use the `-upgrade` option.
 
 
 [Input variables](https://www.terraform.io/docs/configuration/variables.html) serve as parameters for modules and allowing modules to be used in different configurations. They are declared in a `variable` block with a name that must be unique within the module and can be any identifier, **other** than `source`, `version`, `providers`, `count`, `for_each`, `lifecycle`, `depends_on` and `locals`, which are reserved meta-arguments. Optionally a `type` and `default` arguments can be specified along with a `description` to document it.
 
-[Terraform Registry](https://registry.terraform.io/) hosts and [makes searchable and retrievable](https://www.terraform.io/docs/registry/modules/use.html) a number of public modules. When referencing a registry module the syntax is: <NAMESPACE>/<NAME>/<PROVIDER>, e.g. hashicorp/consul/aws and can be referenced in a configuration by:
+[Terraform Registry](https://registry.terraform.io/) hosts and [makes searchable and retrievable](https://www.terraform.io/docs/registry/modules/use.html) a number of public modules. When referencing a registry module the syntax is: `<NAMESPACE>/<NAME>/<PROVIDER>`, e.g. hashicorp/consul/aws and can be referenced in a configuration by:
 ```
 module "consul" {
     source = "hashicorp/consol/aws"
@@ -200,7 +200,7 @@ It is [recommended](https://www.terraform.io/docs/configuration/modules.html#mod
 
 Private module registries can be used to create and confidentially share infrastructure modules within an organisation. Terraform Cloud provides this as a managed capability but there are other providers. A private module registry allows the import and management of a Terraform module from github or other version control systems.
 
-Private registry module source need to also include the hostname: <HOSTNAME>/<NAMESPACE>/<NAME>/<PROVIDER>
+Private registry module source need to also include the hostname: `<HOSTNAME>/<NAMESPACE>/<NAME>/<PROVIDER>`
 ```
 module "consul" {
     source = "app.terraform.io/launchquickly/vpc/aws"
