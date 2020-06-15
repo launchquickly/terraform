@@ -170,7 +170,37 @@ Whilst simplistic this does allow complexity to be hiddent from users through th
 
 ### `for_each` and `for` expressions
 
+Similar to `count` you can peform conditional logic with `for_each` and `for` using a similar technique. 
 
+Either by using empty collections to produce 0 resources or inline blocks.
+e.g.:
+```
+   dynamic "tag" {
+     for_each = var.custom_tags
+
+     content {
+       ...
+     }
+   }
+```
+
+Or by combining `for_each` with `for` to use filtering to implement arbitrary logic.
+e.g.:
+```
+   dynamic "tag" {
+     for_each = {
+       for key, value in var.custom_tags:
+       key => upper(value)
+       if key != "Name"
+     }
+
+     content {
+       ...
+     }
+   }
+```
+
+`for_each` is generally the better option when creating multiple copies of a resource. However, when implementing conditional logic, setting `count` to 0 or 1 tends to be simpler than setting `for_each` to an empty or non-empty collection, so using`count` where conditional logic may well be a better option.
 
 ## Gotchas
 

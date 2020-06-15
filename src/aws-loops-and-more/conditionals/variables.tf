@@ -13,3 +13,12 @@ variable "user_names" {
   type        = list(string)
   default     = ["neo", "trinity", "morpheus"]
 }
+
+variable "custom_tags" {
+  description = "Create IAM users with these names"
+  type        = map(string)
+  default = {
+    ONE = "Tag1",
+    TWO = "Tag2"
+  }
+}
