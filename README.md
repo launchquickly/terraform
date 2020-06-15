@@ -8,6 +8,7 @@ Project to collect and document terraform related examples, practices and tools
 - [Common commands](docs/common-commands.md)
 - [Concepts](docs/concepts.md)
 - [Mechanics and organisation](docs/mechanics-organisation.md)
+- [Development and Delivery pipeline practices](docs/pipeline-practices.md)
 - [Examples](src/README.md)
 - [TODOs](docs/TODOs.md)
 
