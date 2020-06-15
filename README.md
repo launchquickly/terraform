@@ -6,7 +6,8 @@ Project to collect and document terraform related examples, practices and tools
 
 - [Set-up Terraform development environment](docs/setup-dev.md)
 - [Common commands](docs/common-commands.md)
-- [Documentation](docs/README.md)
+- [Concepts](docs/concepts.md)
+- [Mechanics and organisation](docs/mechanics-organisation.md)
 - [Examples](src/README.md)
 - [TODOs](docs/TODOs.md)
 
