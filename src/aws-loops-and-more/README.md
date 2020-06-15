@@ -138,6 +138,39 @@ output "upper_roles" {
 
 ## Conditionals
 
+### `count` parameter
+
+Allows basic conditional logic when constructing resources.
+
+If-statements can be constructed by using `count` in conjunction with a `bool` variable and Terraform's support for *ternary syntax*:
+`<CONDITION> ? <TRUE_VAL> : <FALSE_VAL>`
+You can then use the `bool` variable to false to set `count` to 0 (not created at all), or true to get 1 or more resources created:
+```
+  resource "aws_autoscaling_schedule" "scale_out_business_hours" {
+    count = var.enable_autoscaling ? 1 : 0
+    ...
+```
+
+If-Else-statements can be constructed in a similar way using `count` as a conditional parameter on 2 resources but reversing the values that will flip which is created dependent on the true (if) or false (else) value of the variable.
+
+e.g.
+
+```
+  resource "aws_iam_user_policy_attachment" "user_cloudwatch_full" {
+    count = var.give_full_access ? 1 : 0
+    ...
+
+  resource "aws_iam_user_policy_attachment" "user_cloudwatch_readonly" {
+    count = var.give_full_access ? 0 : 1
+    ... 
+```
+
+Whilst simplistic this does allow complexity to be hiddent from users through the use of `bool` variables, in particular, when constructing re-usable modules.
+
+
+### `for_each` and `for` expressions
+
+
 
 ## Gotchas
 
